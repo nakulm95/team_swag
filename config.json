@@ -1,0 +1,8 @@
+{
+    "lanes": 1,
+    "spots": 100,
+    "direction": "in",
+    "address": "123",
+    "garageID": "blah",
+    "server": "127.0.0.1"
+}
