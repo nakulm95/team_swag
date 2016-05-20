@@ -68,7 +68,7 @@ while True:
         if (Math.abs(magnitude0 - initMagnitude0) <= 10)
             carInBoolean = True
 
-        if (Math.abs(magnitude0 - initMagnitude0) <= 10)
+        if (Math.abs(magnitude1 - initMagnitude1) <= 10)
             carOutBoolean = True
 
 
