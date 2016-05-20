@@ -3,6 +3,15 @@ import time
 import sys
 from datetime import datetime
 import math
+import json
+import requests
+
+with open("config.json") as json_file:
+    json_data = json.load(json_file)
+
+
+server_url = json_data["server"]
+initialTime = time.time()
 
 bus0 = smbus.SMBus(0)
 bus1 = smbus.SMBus(1)
@@ -11,19 +20,22 @@ bus1.write_byte_data(0x0E, 0x10, 0x01)
 time.sleep(0.5)
 #f = open("results0.csv", "w+")
 #f1 = open("results1.csv", "w+")
+log = open("log.txt", "w+")
 
-initMagnitude0 = 0
-initMagnitude1 = 0
+initMagnitude0 = json_data["initMag0"]
+initMagnitude1 = json_data["initMag0"]
 
 carInBoolean = True
 carOutBoolean = True
 
-spotsAvailable = 500
-
-initMags()
+netCars = 0
 
 
-count = 0
+carData = {"garageID": "Team Swag Garage", "netCars": 0}
+
+if (initMagnitude0 == 0 and initMagnitude1 == 0):
+    initMags()
+
 while True:
     try:
 
@@ -57,24 +69,34 @@ while True:
         magnitude0 = math.sqrt(math.pow(xMag0, 2) + math.pow(yMag0, 2) + math.pow(zMag0, 2))
         magnitude1 = math.sqrt(math.pow(xMag1, 2) + math.pow(yMag1, 2) + math.pow(zMag1, 2))
 
-        if ((magnitude0 - initMagnitude0) < -30 && carInBoolean)
+        if ((magnitude0 - initMagnitude0) < -30 and carInBoolean):
             carInBoolean = False
-            # carin++
-        if ((magnitude1 - initMagnitude1) < -30 && carOutBoolean)
+            netCars -= 1
+        if ((magnitude1 - initMagnitude1) < -30 and carOutBoolean):
             carOutBoolean = False
-            #carout++
+            netCars += 1
 
 
-        if (Math.abs(magnitude0 - initMagnitude0) <= 10)
+        if (Math.abs(magnitude0 - initMagnitude0) <= 10):
             carInBoolean = True
 
-        if (Math.abs(magnitude0 - initMagnitude0) <= 10)
+        if (Math.abs(magnitude1 - initMagnitude1) <= 10):
             carOutBoolean = True
+
+
+        currTime = time.time()
+        if (currTime - initialTime > 59):
+            initialTime = currTime
+            carData["netCars"] = netCars
+            netCars = 0
+            r = requests.post(server_url, data=json.dumps(carData))
+            log.write("Current Time: " + currTime + ", " + "netCars: " + carData["netCars"] + ", " + "Status Code: " + r.status_code + ", " + "Text: " + r.text)
+            # TODO: reset log file every month
+            # TODO: new thread for communicating with the server
 
 
         #f.write(str(count) + "," + str(xMag0init) + "," + str(yMag0init) + "," + str(zMag0init) + "\n")
         #f1.write(str(count) + "," + str(xMag1init) + "," + str(yMag1init) + "," + str(zMag1init) + "\n")
-        count += 1
     except IOError:
         print("woops2222222222222222222222222222222222222222222222222222222222222")
     time.sleep(0.0166667)
@@ -91,7 +113,7 @@ def initMags():
     zMag0init = 0
     zMag1init = 0
 
-    for (i in range(100)):
+    for i in range(100):
 
         data0 = bus0.read_i2c_block_data(0x0E, 0x01, 6)
         data1 = bus1.read_i2c_block_data(0x0E, 0x01, 6)
@@ -130,3 +152,15 @@ def initMags():
 
     initMagnitude0 = math.sqrt(math.pow(xMag0init, 2) + math.pow(yMag0init, 2) + math.pow(zMag0init, 2))
     initMagnitude1 = math.sqrt(math.pow(xMag1init, 2) + math.pow(yMag1init, 2) + math.pow(zMag1init, 2))
+
+    json_data["initMag0"] = initMagnitude0
+    json_data["initMag1"] = initMagnitude1
+
+    with open("config.json", 'w') as outfile:
+        json.dump(json_data, outfile)
+
+
+    while (requests.post(server_url + "/init", data=json.dumps(json_data)).status_code != 200):
+        pass
+
+    initialTime = time.time()
