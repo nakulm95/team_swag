@@ -80,7 +80,11 @@ while True:
         if (Math.abs(magnitude0 - initMagnitude0) <= 10):
             carInBoolean = True
 
+<<<<<<< HEAD
         if (Math.abs(magnitude1 - initMagnitude1) <= 10):
+=======
+        if (Math.abs(magnitude1 - initMagnitude1) <= 10)
+>>>>>>> 4def34fbb4bfddba584ad4c5073373545a37683d
             carOutBoolean = True
 
 
