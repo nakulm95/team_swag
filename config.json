@@ -1,8 +1,1 @@
-{
-    "lanes": 1,
-    "spots": 100,
-    "direction": "in",
-    "address": "123",
-    "garageID": "blah",
-    "server": "127.0.0.1"
-}
+{"garageID": "Team Swag Garage", "spots": 100, "server": "127.0.0.1", "address": "123 Swag ST, SwagTown, SwagVille 69696", "initMag0": 0, "initMag1": 0}

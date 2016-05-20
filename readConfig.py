@@ -2,4 +2,6 @@ import json
 
 with open("config.json") as json_file:
     json_data = json.load(json_file)
-    print json_data
+
+with open("config.json", 'w') as outfile:
+	json.dump(json_data, outfile)
