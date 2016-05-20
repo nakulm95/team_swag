@@ -1,0 +1,20 @@
+{
+  "name": "testapp",
+  "version": "0.0.1",
+  "description": "Learning node",
+  "main": "app.js",
+  "author": "Eeshan Londhe",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express":"4.13.4",
+    "mongoose": "4.4.12",
+    "body-parser": "1.15.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eeshanl/RESTful-APis"
+  }
+}
