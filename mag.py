@@ -94,9 +94,10 @@ def initMags():
     json_data["initMag0"] = initMagnitude0
     json_data["initMag1"] = initMagnitude1
 
+    
     with open("config.json", 'w') as outfile:
         json.dump(json_data, outfile)
-
+    print "here"
     while requests.post("http://" + server_url + ":8080/garages", data=json_data).status_code != 200:
        pass
 
@@ -174,21 +175,21 @@ while True:
         print "dif1: " + str(magnitude1 - initMagnitude1)
         
 
-        if ((magnitude0 - initMagnitude0) < -10 and carInBoolean): # should be 30
+        if ((magnitude0 - initMagnitude0) < -20 and carInBoolean): # should be 30
             print "0 Updated"
             carInBoolean = False
             netCars -= 1
-        if ((magnitude1 - initMagnitude1) < -10 and carOutBoolean): # should be 30
+        if (math.fabs(magnitude1 - initMagnitude1) > 20 and carOutBoolean): # should be 30
             print "1 Updated"
             carOutBoolean = False
             netCars += 1
 
 
-        if (math.fabs(magnitude0 - initMagnitude0) <= 10): # should be 10
+        if (math.fabs(magnitude0 - initMagnitude0) <= 8): # should be 10
             carInBoolean = True
 
 
-        if (math.fabs(magnitude1 - initMagnitude1) <= 10): # should be 10
+        if (math.fabs(magnitude1 - initMagnitude1) <= 8): # should be 10
             carOutBoolean = True
 
 
