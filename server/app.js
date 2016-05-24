@@ -10,7 +10,7 @@ var router = express.Router(); // todo: use router to add better functionality a
 // my models
 var Garage = require('./models/garage')
 
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '173.250.237.149';
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 // MongoDB

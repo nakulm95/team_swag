@@ -33,6 +33,7 @@
         function contentLoad() {
           loadContent(function(g) {
             var l = $('<ul>').appendTo($("#lis"));
+            console.log(g);
             g.forEach(function(element) {
               var ul = $('<li>').text(element.garageID);
               ul.on('click', function(e) {
@@ -52,7 +53,7 @@
 
         function getUpdatedData(id, callback) {
           var request = $.ajax({
-            url: 'http://108.179.166.105:8080/garages/' + id,
+            url: 'http://173.250.237.149:8080/garages/' + id,
             type: 'GET',
             dataType: 'jsonp'
           });
@@ -72,7 +73,7 @@
 
         function loadContent(callback) {
           var request = $.ajax({
-            url: 'http://108.179.166.105:8080/garages',
+            url: 'http://173.250.237.149:8080/garages',
             type: 'GET',
             dataType: 'jsonp'
           });
