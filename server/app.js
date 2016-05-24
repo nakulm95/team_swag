@@ -1,16 +1,16 @@
-// Books and Genres web service
+// Garages web service
 
 // call the packages we need
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var router = express.Router(); // todo: use router to add better functionality and routing capability; 
+var router = express.Router(); // todo: use router to add better functionality and routing capability;
 
 // my models
 var Garage = require('./models/garage')
 
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '108.179.166.105';
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '173.250.237.149';
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 // MongoDB
