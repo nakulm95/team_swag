@@ -10,7 +10,7 @@ var router = express.Router(); // todo: use router to add better functionality a
 // my models
 var Garage = require('./models/garage')
 
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '108.179.166.105';
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 // MongoDB
@@ -38,96 +38,54 @@ router.route('/garages')
 		// with upsert:true, creates the object if it doesn't exist. otherwise, updates fields specificed in $set: {}
 		Garage.findOneAndUpdate({garageID: body.garageID}, {$set: {spotsAvailable: body.spots, address: body.address}}, {upsert: true}, function(err, garage) {});
 		res.json({message: 'Garage created!'});
-
-		// NOT NEEDED:
-		// Garage.getGarageById(body.garageID, function(err, garage) {
-		// 	if (err) {
-		// 		throw err;
-		// 	}
-		// 	// if garage is found, update the garage info just in case. otherwise, add garage
-		// 	if (garage != null) {
-		// 		console.log("entering here");
-		// 		Garage.findOneAndUpdate({garageID: body.garageID}, {$set: {spotsAvailable: body.spots}}, {new: true, upsert: true}, function(err, garage) {
-		// 			console.log(garage != null ? garage.spotsAvailable : "gg");
-		// 		});
-		// 	} else {
-		// 		Garage.addGarage(body, function(err, garage) {});
-		// 	}
-		// 	res.json({message: 'Garage created!'});
-		// });
 	})
 	.get(function(req, res) {
 		Garage.find(function(err, garage) {
 			if (err)
 				res.send(err);
 
-			res.json(garage);
+			res.jsonp(garage);
 		});
 	});
 
-// get garage by specific id (garage id)
+// get/update garage by specific id (garage id)
 router.route('/garages/:garage_id')
 	.get(function(req, res) {
 		Garage.getGarageById(req.params.garage_id, function(err, garage) {
 			if (err)
 				res.send(err);
 
-			res.json(garage);
+			if (garage == null) {
+				res.status(202);
+				res.send("Garage doesn't exist!");
+			} else {
+				res.jsonp(garage);
+			}
+		});
+	})
+	.put(function(req, res) {
+		Garage.getGarageById(req.params.garage_id, function(err, garage) {
+			if (err)
+				res.send(err)
+
+			var curr_count = parseInt(garage.spotsAvailable);
+			var updated_count = curr_count + parseInt(req.body.spots);
+			Garage.findOneAndUpdate({garageID: req.body.garageID}, {$set: {spotsAvailable: updated_count}}, function(err, garage) {
+				if (err)
+					res.send(err);
+
+				res.json({message: "Updated!"});
+			});
+		});
+	})
+	.delete(function(req, res) {
+		Garage.findOneAndRemove({garageID: req.body.garageID}, function(error, doc, result) {
+			if (error)
+				res.send(error)
+
+			res.json({message: "Garage removed!"});
 		});
 	});
-
-
-/* Genre */
-
-router.get('/api/genres', function(request, response) {
-	Genre.getGenres(function(err, genres) {
-		if (err) {
-			throw err;
-		}
-		response.json(genres);
-	});
-});
-
-router.post('/api/genres', function(request, response) {
-	var genre = request.body;
-	Genre.addGenre(genre, function(err, genre) {
-		if (err) {
-			throw err;
-		}
-		response.json(genre);
-	});
-});
-
-/* Books */
-
-router.get('/api/books/', function(request, response) {
-	Book.getBooks(function(err, books) {
-		if (err) {
-			throw err;
-		}
-		response.json(books);
-	});
-});
-
-
-router.get('/api/books/:_id', function(request, response) {
-	Book.getBookById(request.params._id, function(err, book) {
-		if (err) {
-			throw err;
-		}
-		response.json(book);
-	});
-});
-
-router.post('/api/books', function(request, response) {
-	var book = request.body;
-	Book.addBook(book, function(err, book) {
-		if (err) {
-			throw err;
-		}
-		response.json(book);
-	});
-});
 
 app.use('/', router);
 
