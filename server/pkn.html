@@ -20,6 +20,8 @@
     <ul id="lis"></ul>
     <span id="spots"></span>
     <script>
+
+      var serverIP = "http://108.179.166.218:8080/garages/";
       (function() {
         $(document).ready(function() {
           contentLoad();
@@ -53,7 +55,7 @@
 
         function getUpdatedData(id, callback) {
           var request = $.ajax({
-            url: 'http://173.250.237.149:8080/garages/' + id,
+            url: serverIP + "" + id,
             type: 'GET',
             dataType: 'jsonp'
           });
@@ -73,7 +75,7 @@
 
         function loadContent(callback) {
           var request = $.ajax({
-            url: 'http://173.250.237.149:8080/garages',
+            url: serverIP,
             type: 'GET',
             dataType: 'jsonp'
           });
