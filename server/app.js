@@ -5,12 +5,14 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var router = express.Router(); // todo: use router to add better functionality and routing capability; 
+var router = express.Router(); // todo: use router to add better functionality and routing capability;
+
+// api key: AIzaSyAJlvHQzXgNuAeLZDaIeVivwEcspeeWRQs 
 
 // my models
 var Garage = require('./models/garage')
 
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '108.179.166.105';
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '69.91.161.58';
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 // MongoDB
