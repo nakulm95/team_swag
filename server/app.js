@@ -1,4 +1,4 @@
-// Books and Genres web service
+// Garages web service
 
 // call the packages we need
 var express = require('express');
@@ -6,8 +6,6 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var router = express.Router(); // todo: use router to add better functionality and routing capability;
-
-// api key: AIzaSyAJlvHQzXgNuAeLZDaIeVivwEcspeeWRQs 
 
 // my models
 var Garage = require('./models/garage')

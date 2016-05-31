@@ -20,6 +20,8 @@
     <ul id="lis"></ul>
     <span id="spots"></span>
     <script>
+
+      var serverIP = "http://108.179.166.218:8080/garages/";
       (function() {
         $(document).ready(function() {
           contentLoad();
@@ -33,6 +35,7 @@
         function contentLoad() {
           loadContent(function(g) {
             var l = $('<ul>').appendTo($("#lis"));
+            console.log(g);
             g.forEach(function(element) {
               var ul = $('<li>').text(element.garageID);
               ul.on('click', function(e) {
@@ -52,7 +55,7 @@
 
         function getUpdatedData(id, callback) {
           var request = $.ajax({
-            url: 'http://108.179.166.105:8080/garages/' + id,
+            url: serverIP + "" + id,
             type: 'GET',
             dataType: 'jsonp'
           });
@@ -72,7 +75,7 @@
 
         function loadContent(callback) {
           var request = $.ajax({
-            url: 'http://108.179.166.105:8080/garages',
+            url: serverIP,
             type: 'GET',
             dataType: 'jsonp'
           });

@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
 //var router = express.Router(); // todo: use router to add better functionality and routing capability; 
+var router = express.Router(); // todo: use router to add better functionality and routing capability;
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
