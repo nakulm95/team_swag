@@ -7,3 +7,6 @@ By Eeshan Londhe, Nakul Malhotra, Henry Zhao, Sorav Sharma
   - server/mapinterface.html : contains web user interface
   - mag.py : python code running on raspberry pi to detect a car
   - config.json : configuration file for startup use
+
+The high level block diagram is shown below:
+![Block Diagram](block.png)
